@@ -1,16 +1,15 @@
 # PyInstaller Docker Images
 
-**cdrx/pyinstaller-linux** and **cdrx/pyinstaller-windows** are a pair of Docker containers to ease compiling Python applications to binaries / exe files.
+**toilal/pyinstaller-linux** and **toilal/pyinstaller-windows** are a pair of Docker containers to ease compiling Python applications to binaries / exe files.
 
-Current PyInstaller version used: 3.6.
+Those images have been forked from [cdrx/docker-pyinstaller](https://github.com/cdrx/docker-pyinstaller) to provide 
+more variations of base images, using `ubuntu:xenial`, `ubuntu:precise` and `ubuntu:focal` as base images.
+
+Pyinstaller `3.6` is supported.
 
 ## Tags
 
-`cdrx/pyinstaller-linux` and `cdrx/pyinstaller-windows` both have two tags, `:python2` and `:python3` which you can use depending on the requirements of your project. `:latest` points to `:python3`
-
-The `:python2` tags run Python 2.7.
-
-The `:python3` tag runs Python 3.7.
+`toilal/pyinstaller-linux` and `toilal/pyinstaller-windows`
 
 ## Usage
 
@@ -25,13 +24,13 @@ If the `src` folder has a `requirements.txt` file, the packages will be installe
 For example, in the folder that has your source code, `.spec` file and `requirements.txt`:
 
 ```
-docker run -v "$(pwd):/src/" cdrx/pyinstaller-windows
+docker run -v "$(pwd):/src/" toilal/pyinstaller-windows
 ```
 
 will build your PyInstaller project into `dist/windows/`. The `.exe` file will have the same name as your `.spec` file.
 
 ```
-docker run -v "$(pwd):/src/" cdrx/pyinstaller-linux
+docker run -v "$(pwd):/src/" toilal/pyinstaller-linux
 ```
 
 will build your PyInstaller project into `dist/linux/`. The binary will have the same name as your `.spec` file.
@@ -41,14 +40,14 @@ will build your PyInstaller project into `dist/linux/`. The binary will have the
 You'll need to supply a custom command to Docker to install system pacakges. Something like:
 
 ```
-docker run -v "$(pwd):/src/" --entrypoint /bin/sh cdrx/pyinstaller-linux -c "apt-get update -y && apt-get install -y wget && /entrypoint.sh"
+docker run -v "$(pwd):/src/" --entrypoint /bin/sh toilal/pyinstaller-linux -c "apt-get update -y && apt-get install -y wget && /entrypoint.sh"
 ```
 
 Replace `wget` with the dependencies / package(s) you need to install.
 
 ##### How do I generate a .spec file?
 
-`docker run -v "$(pwd):/src/" cdrx/pyinstaller-linux "pyinstaller your-script.py"`
+`docker run -v "$(pwd):/src/" toilal/pyinstaller-linux "pyinstaller your-script.py"`
 
 will generate a `spec` file for `your-script.py` in your current working directory. See the PyInstaller docs for more information.
 
