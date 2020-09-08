@@ -3,8 +3,11 @@
 # Run NAMESPACE=custom ./build.sh to customize images namespace
 NAMESPACE=${NAMESPACE-toilal}
 
+# Run DOCKER_BUILD_OPTS=--pull ./build.sh to download latest version of base images.
+DOCKER_BUILD_OPTS=${DOCKER_BUILD_OPTS---pull}
+
 echo "Building Default Linux image (Python 3, Precise, 64bit)"
-docker build -f Dockerfile-py3-precise-amd64 \
+docker build $DOCKER_BUILD_OPTS -f Dockerfile-py3-precise-amd64 \
 -t $NAMESPACE/pyinstaller-linux \
 -t $NAMESPACE/pyinstaller-linux:64bit \
 -t $NAMESPACE/pyinstaller-linux:python3 \
