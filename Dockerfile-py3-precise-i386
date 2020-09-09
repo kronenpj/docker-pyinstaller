@@ -1,4 +1,4 @@
-FROM i386/ubuntu:12.04
+FROM i386/ubuntu:precise
 SHELL ["/bin/bash", "-i", "-c"]
 
 ARG PYTHON_VERSION=3.7.9

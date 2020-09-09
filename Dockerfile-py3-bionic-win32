@@ -1,8 +1,8 @@
-FROM ubuntu:xenial
+FROM ubuntu:bionic
 
 ENV DEBIAN_FRONTEND noninteractive
 
-ARG WINE_VERSION=staging
+ARG WINE_VERSION=stable
 ARG PYTHON_VERSION=3.7.9
 ARG PYINSTALLER_VERSION=4.0
 
@@ -10,7 +10,10 @@ ARG PYINSTALLER_VERSION=4.0
 RUN set -x \
     && dpkg --add-architecture i386 \
     && apt-get update -qy \
-    && apt-get install --no-install-recommends -qfy apt-transport-https software-properties-common wget \
+    && apt-get install --no-install-recommends -qfy apt-transport-https software-properties-common wget gpg-agent rename \
+    && wget -nv https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/Release.key \
+    && apt-key add Release.key \
+    && apt-add-repository 'deb https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/ ./' \
     && wget -nv https://dl.winehq.org/wine-builds/winehq.key \
     && apt-key add winehq.key \
     && add-apt-repository 'https://dl.winehq.org/wine-builds/ubuntu/' \
@@ -22,7 +25,7 @@ RUN set -x \
     && mv winetricks /usr/local/bin
 
 # wine settings
-ENV WINEARCH win64
+ENV WINEARCH win32
 ENV WINEDEBUG fixme-all
 ENV WINEPREFIX /wine
 
@@ -36,7 +39,7 @@ ENV PYPI_INDEX_URL=https://pypi.python.org/simple
 RUN set -x \
     && winetricks win7 \
     && for msifile in `echo core dev exe lib path pip tcltk tools`; do \
-        wget -nv "https://www.python.org/ftp/python/$PYTHON_VERSION/amd64/${msifile}.msi"; \
+        wget -nv "https://www.python.org/ftp/python/$PYTHON_VERSION/win32/${msifile}.msi"; \
         wine msiexec /i "${msifile}.msi" /qb TARGETDIR=C:/Python; \
         rm ${msifile}.msi; \
     done \
@@ -55,19 +58,19 @@ RUN set -x \
 
 ENV W_DRIVE_C=/wine/drive_c
 ENV W_WINDIR_UNIX="$W_DRIVE_C/windows"
-ENV W_SYSTEM64_DLLS="$W_WINDIR_UNIX/system32"
+ENV W_SYSTEM_DLLS="$W_WINDIR_UNIX/system32"
 ENV W_TMP="$W_DRIVE_C/windows/temp/_$0"
 
 # install Microsoft Visual C++ Redistributable for Visual Studio 2017 dll files
 RUN set -x \
     && rm -f "$W_TMP"/* \
-    && wget -P "$W_TMP" https://download.visualstudio.microsoft.com/download/pr/11100230/15ccb3f02745c7b206ad10373cbca89b/VC_redist.x64.exe \
-    && cabextract -q --directory="$W_TMP" "$W_TMP"/VC_redist.x64.exe \
+    && wget -P "$W_TMP" https://download.visualstudio.microsoft.com/download/pr/11687613/88b50ce70017bf10f2d56d60fcba6ab1/VC_redist.x86.exe \
+    && cabextract -q --directory="$W_TMP" "$W_TMP"/VC_redist.x86.exe \
     && cabextract -q --directory="$W_TMP" "$W_TMP/a10" \
     && cabextract -q --directory="$W_TMP" "$W_TMP/a11" \
     && cd "$W_TMP" \
     && rename 's/_/\-/g' *.dll \
-    && cp "$W_TMP"/*.dll "$W_SYSTEM64_DLLS"/
+    && cp "$W_TMP"/*.dll "$W_SYSTEM_DLLS"/
 
 # install pyinstaller
 RUN /usr/bin/pip install pyinstaller==$PYINSTALLER_VERSION

@@ -1,8 +1,8 @@
-FROM ubuntu:16.04
+FROM ubuntu:xenial
 
 ENV DEBIAN_FRONTEND noninteractive
 
-ARG WINE_VERSION=winehq-staging
+ARG WINE_VERSION=staging
 ARG PYTHON_VERSION=3.7.9
 ARG PYINSTALLER_VERSION=4.0
 
@@ -15,7 +15,7 @@ RUN set -x \
     && apt-key add winehq.key \
     && add-apt-repository 'https://dl.winehq.org/wine-builds/ubuntu/' \
     && apt-get update -qy \
-    && apt-get install --no-install-recommends -qfy $WINE_VERSION winbind cabextract \
+    && apt-get install --no-install-recommends -qfy winehq-$WINE_VERSION winbind cabextract \
     && apt-get clean \
     && wget -nv https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
     && chmod +x winetricks \

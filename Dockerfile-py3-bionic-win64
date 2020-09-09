@@ -1,8 +1,8 @@
-FROM ubuntu:xenial
+FROM ubuntu:bionic
 
 ENV DEBIAN_FRONTEND noninteractive
 
-ARG WINE_VERSION=staging
+ARG WINE_VERSION=stable
 ARG PYTHON_VERSION=3.7.9
 ARG PYINSTALLER_VERSION=4.0
 
@@ -10,7 +10,10 @@ ARG PYINSTALLER_VERSION=4.0
 RUN set -x \
     && dpkg --add-architecture i386 \
     && apt-get update -qy \
-    && apt-get install --no-install-recommends -qfy apt-transport-https software-properties-common wget \
+    && apt-get install --no-install-recommends -qfy apt-transport-https software-properties-common wget gpg-agent rename \
+    && wget -nv https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/Release.key \
+    && apt-key add Release.key \
+    && apt-add-repository 'deb https://download.opensuse.org/repositories/Emulators:/Wine:/Debian/xUbuntu_18.04/ ./' \
     && wget -nv https://dl.winehq.org/wine-builds/winehq.key \
     && apt-key add winehq.key \
     && add-apt-repository 'https://dl.winehq.org/wine-builds/ubuntu/' \

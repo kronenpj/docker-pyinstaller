@@ -7,8 +7,10 @@ name: CI
 on:
   push:
     branches:
-      - "master"
-      - "release/*"
+      - "develop"
+  pull_request:
+    branches:
+      - "*"
 
 jobs:
   build:
@@ -17,15 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: azure/docker-login@v1
-        with:
-          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
-          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
-
       - name: Build images
         run: |
           ./build.sh
-
-      - name: Push images
-        run: |
-          ./push.sh

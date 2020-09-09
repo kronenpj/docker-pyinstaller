@@ -7,19 +7,52 @@ more variations of base images, using `ubuntu:xenial`, `ubuntu:precise` and `ubu
 
 Pyinstaller `4.0` is the default supported version, available on python `3.5+`. Pyinstaller `3.6` is also supported.
 
-## Tags
+## Versions
 
-`toilal/pyinstaller-linux` and `toilal/pyinstaller-windows`
+[`toilal/pyinstaller-linux`](https://hub.docker.com/r/toilal/pyinstaller-linux) and [`toilal/pyinstaller-windows`](https://hub.docker.com/r/toilal/pyinstaller-windows) images are available on docker hub and provides many tags to 
+choose the exact base image you need.
+
+You should find the image you need using the Filter Tags input on docker hub: 
+- [Linux](https://hub.docker.com/r/toilal/pyinstaller-linux/tags)
+- [Windows](https://hub.docker.com/r/toilal/pyinstaller-windows/tags)
+
+Tags are following this template: 
+
+- `[pyinstaller_version]-[python_version]-[arch]-[base_image]`
+
+Each part is optionnal, falling back to defaults (**in bold**)
+
+- PyInstaller version: 
+    - **`4.0`**
+    - `3.6`
+- Python version: 
+    - **`3.7.9`**, **`3.7`**, **`3`**
+    - `2.7.17`, `2.7`, `2`
+    - `3.3.7`, `3.3`
+    - `3.4.10`, `3.4`
+    - `3.5.9`, `3.5`
+    - `3.6.12`, `3.6`
+    - `3.8.5`, `3.8`
+- Arch: 
+    - **`64bits`**
+    - `32bits`
+- Base image:
+    - **`xenial`**, **`ubuntu (16.04)`**
+    - `bionic`, `ubuntu18.04`
+    - `focal`, `ubuntu20.04`
+    - `trusty`, `ubuntu14.04`
+    - `precise`, `ubuntu12.04`
 
 ## Usage
 
-There are two containers, one for Linux and one for Windows builds. The Windows builder runs Wine inside Ubuntu to emulate Windows in Docker.
+The Windows builder runs Wine inside Ubuntu to emulate Windows in Docker.
 
 To build your application, you need to mount your source code into the `/src/` volume.
 
-The source code directory should have your `.spec` file that PyInstaller generates. If you don't have one, you'll need to run PyInstaller once locally to generate it.
+The source code directory should have your `.spec` file that PyInstaller generates.
 
-If the `src` folder has a `requirements.txt` file, the packages will be installed into the environment before PyInstaller runs.
+If the `src` folder has a `requirements.txt` file, the packages will be installed into the environment before 
+PyInstaller runs.
 
 For example, in the folder that has your source code, `.spec` file and `requirements.txt`:
 
@@ -53,7 +86,7 @@ will generate a `spec` file for `your-script.py` in your current working directo
 
 ##### How do I change the PyInstaller version used?
 
-Add `pyinstaller=3.1.1` to your `requirements.txt`.
+Add `pyinstaller=3.6` to your `requirements.txt`.
 
 ##### Is it possible to use a package mirror?
 
