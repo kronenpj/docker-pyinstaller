@@ -5,7 +5,7 @@
 Those images have been forked from [cdrx/docker-pyinstaller](https://github.com/cdrx/docker-pyinstaller) to provide 
 more variations of base images, using `ubuntu:xenial`, `ubuntu:precise` and `ubuntu:focal` as base images.
 
-Pyinstaller `3.6` is supported.
+Pyinstaller `4.0` is the default supported version, available on python `3.5+`. Pyinstaller `3.6` is also supported.
 
 ## Tags
 
