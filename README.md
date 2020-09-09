@@ -40,7 +40,7 @@ will build your PyInstaller project into `dist/linux/`. The binary will have the
 You'll need to supply a custom command to Docker to install system pacakges. Something like:
 
 ```
-docker run -v "$(pwd):/src/" --entrypoint /bin/sh toilal/pyinstaller-linux -c "apt-get update -y && apt-get install -y wget && /entrypoint.sh"
+docker run -v "$(pwd):/src/" --entrypoint /bin/bash toilal/pyinstaller-linux -c "apt-get update -y && apt-get install -y wget && /entrypoint.sh"
 ```
 
 Replace `wget` with the dependencies / package(s) you need to install.
